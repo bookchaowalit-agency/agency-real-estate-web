@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "mode": "persuade",
+  "world": "Architectural plan for property operations",
+  "artifact": "architectural",
+  "tokens": {
+    "color": {
+      "bg": "#e9dfd1",
+      "ink": "#302521",
+      "muted": "#6d5c51",
+      "line": "#bba793",
+      "panel": "#d9c8b6",
+      "accent": "#b85c41",
+      "inverse": "#30241f",
+      "inverseInk": "#f5eee4"
+    },
+    "typography": {
+      "display": "Noto Serif Thai",
+      "body": "Noto Sans Thai",
+      "utility": "system monospace"
+    },
+    "spacing": {
+      "page": "clamp(18px, 5vw, 76px)",
+      "section": "clamp(67px, 10vw, 144px)"
+    },
+    "shape": {
+      "radius": "world-specific",
+      "elevation": "one deliberate surface system"
+    }
+  }
+}
