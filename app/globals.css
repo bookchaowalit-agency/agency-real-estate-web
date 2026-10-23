@@ -227,3 +227,8 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
 .pseo-card-dark .pseo-eyebrow { color: var(--inverse-ink); }
 
 .pseo-eyebrow, .pseo-aside dt, .pseo-steps li > span { color: var(--ink); }
+
+/* Thai tone marks sit above the tight .98 line box: give large section headings room below their eyebrow,
+   and keep the readiness gate off the deliverables grid (its padding shorthand drops .pseo-section's top padding). */
+.pseo-section-heading h2, .pseo-readiness h2, .pseo-card h2 { margin-top: .32em; }
+.pseo-readiness { margin-top: clamp(40px, 6vw, 72px); }
