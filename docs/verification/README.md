@@ -12,6 +12,11 @@
 ## Local checks
 
 ```bash
+npm run lint
 npm run typecheck
-npm run build
+npm test        # Vitest: noindex / Disallow default, the indexing switch, URL parsing (tests/site.test.ts, tests/routes.test.ts)
+npm run check   # lint + typecheck + tests + static export
 ```
+
+CI runs the same checks through the shared workflow (`.github/workflows/ci.yml`) with a line-coverage gate, then
+asserts `out/robots.txt` is `Disallow: /`.

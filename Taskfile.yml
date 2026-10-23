@@ -10,12 +10,12 @@ tasks:
   lint:
     cmds:
       - npm run lint
-  test:
-    cmds:
-      - npm test
   typecheck:
     cmds:
       - npm run typecheck
+  test:
+    cmds:
+      - npm test
   check:
     cmds:
       - npm run check
