@@ -1,20 +1,6 @@
 import Link from 'next/link';
+import { readinessCopy } from '@/lib/readiness';
 import { site } from '@/lib/site';
-
-const statusCopy = {
-  incubating: {
-    label: 'กำลังเปิดรอบ validation',
-    note: 'กำลังทดสอบ buyer, offer และ delivery economics ก่อนเปิดรับงานในขอบเขตที่ชัดเจน',
-  },
-  target: {
-    label: 'เตรียมไว้ใน portfolio',
-    note: 'positioning พร้อมสำหรับการทดสอบ แต่ owner และหลักฐานการส่งมอบยังต้องผ่าน gate ก่อนเปิดรับงาน',
-  },
-  locked: {
-    label: 'future capability',
-    note: 'เก็บไว้สำหรับการวิจัยและวางพันธมิตร ยังไม่มีการรับข้อมูลหรือรับประกันบริการ',
-  },
-} as const;
 
 function Artifact() {
   const labels = site.scope.slice(0, 4);
@@ -54,7 +40,7 @@ function Artifact() {
 }
 
 export default function HomePage() {
-  const readiness = statusCopy[site.status];
+  const readiness = readinessCopy(site.status);
 
   return (
     <div className={`site-shell archetype-${site.design.archetype}`} data-site={site.slug}>

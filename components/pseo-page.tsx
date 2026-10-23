@@ -1,20 +1,15 @@
 import Link from 'next/link';
+import { readinessCopy } from '@/lib/readiness';
 import { site } from '@/lib/site';
 import { pseoService, type PseoService } from '@/lib/pseo';
 import { serviceStructuredData } from '@/lib/structured-data';
-
-const statusCopy = {
-  incubating: { label: 'กำลังเปิดรอบ validation', note: 'กำลังทดสอบ buyer, offer และ delivery economics ก่อนเปิดรับงานในขอบเขตที่ชัดเจน' },
-  target: { label: 'เตรียมไว้ใน portfolio', note: 'positioning พร้อมสำหรับการทดสอบ แต่ owner และหลักฐานการส่งมอบยังต้องผ่าน gate ก่อนเปิดรับงาน' },
-  locked: { label: 'future capability', note: 'เก็บไว้สำหรับการวิจัยและวางพันธมิตร ยังไม่มีการรับข้อมูลหรือรับประกันบริการ' },
-} as const;
 
 export function PseoHeader() {
   return <header className="pseo-header"><Link className="pseo-brand" href="/"><span className="pseo-brand-mark" aria-hidden="true">{String(site.number).padStart(2, '0')}</span><span><strong>{site.name}</strong><small>{site.thaiName}</small></span></Link><nav className="pseo-nav" aria-label="เมนู service"><Link href="/">Showcase</Link><Link href={`/services/${pseoService.slug}/`}>Service</Link></nav></header>;
 }
 
 export function PseoLandingPage({ service = pseoService }: { service?: PseoService }) {
-  const readiness = statusCopy[service.agencyStatus];
+  const readiness = readinessCopy(service.agencyStatus);
   const structuredDataJson = serviceStructuredData(service);
   return <div className="pseo-shell"><PseoHeader /><main id="main-content" className="pseo-main">
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: structuredDataJson }} />
