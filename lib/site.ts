@@ -21,6 +21,7 @@ export const site = {
   "status": "locked",
   "design": {
     "projectName": "solo-agency-real-estate",
+    "productionUrl": "https://solo-agency-real-estate.vercel.app",
     "archetype": "architectural",
     "motif": "architectural",
     "world": "Architectural plan for property operations",
