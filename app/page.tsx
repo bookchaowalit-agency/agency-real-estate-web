@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { pseoService } from '@/lib/pseo';
 import { LangText } from '@/components/lang-text';
-import SiteLinks, { portfolioHref } from '@/components/site-links';
+import SiteLinks, { hubHref, portfolioHref } from '@/components/site-links';
 import { type AgencyStatus, readinessCopy } from '@/lib/readiness';
 import { site } from '@/lib/site';
 
@@ -64,7 +64,7 @@ export default function HomePage() {
             <h1><LangText text={site.promise} /></h1>
             <p className="hero-thesis"><LangText text={site.design.thesis} /></p>
             <div className="hero-actions">
-              <a className="primary-link" href="#offer">{site.cta}<span className="link-mark" aria-hidden="true" /></a>
+              <a className="primary-link" href={hubHref}>{site.cta}<span className="link-mark" aria-hidden="true" /></a>
               {locked ? <span className="status-badge">ยังไม่เปิดรับงาน</span> : null}
             </div>
             {/* No portfolio link here: the readiness note below holds the page's one link to it (pSEO plan). */}

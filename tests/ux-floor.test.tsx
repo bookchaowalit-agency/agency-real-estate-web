@@ -10,23 +10,21 @@ import type { AgencyStatus } from '@/lib/readiness';
 import { site } from '@/lib/site';
 import { socialImage } from '@/lib/site-config';
 
-// 2026-11-18 review: Thai nav, honest next step for each readiness state; 2026-11-19: no sitewide cross-site footer links.
+// 2026-11-18 review: Thai nav, honest next step, and a shared hub link in the footer.
 describe('UX floor', () => {
-  it('keeps cross-site links out of the shared footer: one in-content portfolio link on the home page only', async () => {
+  it('links to the hub from every footer and the portfolio from the home readiness note', async () => {
     const home = renderToString(<Home />);
     const service = renderToString(await ServicePage({ params: Promise.resolve({ slug: pseoService.slug }) }));
-    // pSEO plan: no sitewide footer links across the 14 sites (they would read as a link network).
     for (const html of [home, service]) {
       const footer = html.slice(html.lastIndexOf('<footer'));
-      expect(footer).not.toMatch(/href="https:\/\/(bookchaowalit\.com|agency\.bookchaowalit\.com)\/?(agencies)?"/);
+      expect(footer).toContain('href="https://bookchaowalit.com/">bookchaowalit.com</a>');
       expect(footer).toContain('href="https://bookchaowalit.com/privacy"');
       expect(footer).toContain('href="https://monitor.bookchaowalit.com/"');
       expect(footer).toContain('href="mailto:bookchaowalit.work@gmail.com"');
     }
     expect(home.match(/href="https:\/\/agency\.bookchaowalit\.com[^"]*"/g)).toHaveLength(1);
-    expect(home).not.toContain('href="https://bookchaowalit.com"');
+    expect(home).toContain('<a class="primary-link" href="https://bookchaowalit.com/">bookchaowalit.com');
     expect(service).not.toMatch(/href="https:\/\/agency\.bookchaowalit\.com/);
-    expect(service).not.toContain('href="https://bookchaowalit.com"');
   });
 
   it('uses Thai nav labels that match the section headings', () => {
@@ -71,7 +69,10 @@ describe('UX floor', () => {
       const ref = value?.match(/^var\(--([a-z0-9-]+)\)$/);
       return ref && depth < 8 ? resolve(ref[1], depth + 1) : value;
     };
-    const fallback = readFileSync(join(process.cwd(), 'app', 'ux-floor.css'), 'utf8').match(/:focus-visible, a:focus-visible \{[^}]*var\(--focus, var\(--([a-z-]+)\)\)/)![1];
+    const floor = readFileSync(join(process.cwd(), 'app', 'ux-floor.css'), 'utf8');
+    expect(floor).toContain(':where(button, input, select, summary):focus-visible');
+    expect(floor).toMatch(/outline-offset:\s*5px/);
+    const fallback = floor.match(/:focus-visible[^\{]*\{[^}]*var\(--focus, var\(--([a-z-]+)\)\)/)![1];
     const ring = resolve('focus') ?? resolve(fallback)!;
     const bg = resolve('bg')!;
     expect(ring).toMatch(/^#[0-9a-f]{6}$/i);

@@ -1,13 +1,13 @@
-// Footer on every page: privacy, public status and contact only. No sitewide links to the hub or the agency
-// portfolio: 14 showcase domains all linking the same sites from every footer reads as a link network, which the
-// pSEO plan forbids (docs/pseo-indexing-and-links-plan.md, Phase 3a + Guardrails). The home page carries one
-// in-content link to the portfolio instead (app/page.tsx, readiness note).
+// Shared footer links for the hub, privacy, public status and contact. The home page's readiness note links to
+// the agency portfolio so visitors can see the broader set of verticals.
+export const hubHref = 'https://bookchaowalit.com/';
 export const contactHref = 'mailto:bookchaowalit.work@gmail.com';
 export const portfolioHref = 'https://agency.bookchaowalit.com/agencies';
 
 export default function SiteLinks() {
   return (
     <nav className="site-links" aria-label="ลิงก์เว็บไซต์">
+      <a href={hubHref}>bookchaowalit.com</a>
       <a href="https://bookchaowalit.com/privacy">Privacy</a>
       <a href="https://monitor.bookchaowalit.com/">Status</a>
       <a href={contactHref}>Contact</a>
