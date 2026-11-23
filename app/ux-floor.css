@@ -6,9 +6,9 @@
  * Floor values (focus ring, 44px targets, Thai heading leading) come from design-floor/tokens.css.
  */
 
-/* Focus: one 3px ring with a 2px offset everywhere (replaces the old 2px / 5px link-only rule). Without a site
+/* Focus: a 3px high-contrast ring with a 5px offset for links and form controls. Without a site
    --focus the ring is --ink, not --accent: a light accent (e.g. #83b936 on #edf5f4, 2.1:1) misses 3:1 on --bg. */
-:focus-visible, a:focus-visible { outline: var(--focus-ring-width, 3px) solid var(--focus, var(--ink)); outline-offset: var(--focus-ring-offset, 2px); }
+:focus-visible, a:focus-visible, :where(button, input, select, summary):focus-visible { outline: var(--focus-ring-width, 3px) solid var(--focus, var(--ink)); outline-offset: 5px; }
 ::selection { color: var(--inverse-ink); background: var(--inverse); }
 html { scroll-padding-top: 24px; }
 

@@ -9,7 +9,7 @@ export const site = {
   "offer": "Property data and operations strategy (future)",
   "offerDetail": "วาง data, operations และ asset decision map สำหรับ portfolio อสังหาริมทรัพย์",
   "fit": "หน้า portfolio สำหรับความสามารถในอนาคต ยังไม่ใช่โครงการนายหน้า หรือการรับประกันผลตอบแทน",
-  "cta": "ดู future capability",
+  "cta": "bookchaowalit.com",
   "scope": [
     "Advisory",
     "Development",
