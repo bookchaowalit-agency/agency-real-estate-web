@@ -10,7 +10,7 @@ Last reviewed: 2026-11-28 · commit `7430d90`
 flowchart TD
   DEV["push or PR to main"] --> CI["CI: ci-node + security scan"]
   CI -->|"fails closed"| CIFAIL["red check on the commit"]
-  CI -->|green| NODEPLOY["no deploy from push (Vercel has no Git link) [ต้องยืนยัน]"]
+  DEV -->|"push"| NODEPLOY["no deploy from push per PRODUCT.md (Vercel has no Git link); CI does not deploy [ต้องยืนยัน]"]
   OWNER["owner"] -->|"Vercel CLI"| VERCEL["Vercel project solo-agency-real-estate: static out/"]
   DATA["lib/site.ts + lib/pseo.ts (hard-coded copy)"] --> BUILD["next build, output export, trailingSlash"]
   ENV["NEXT_PUBLIC_SITE_URL + NEXT_PUBLIC_SITE_INDEXABLE"] --> GATE{"approved URL AND INDEXABLE == true?"}
@@ -26,7 +26,7 @@ flowchart TD
   HOME --> PORTFOLIO["out-link to agency portfolio, privacy, status, mail"]
   SERVICE --> NOFORM
   VERCEL --> VISITOR
-  VISITOR -.->|"browser error"| SENTRY["Sentry (errors only, scrubbed) only if NEXT_PUBLIC_SENTRY_DSN set"]
+  VISITOR -.->|"browser error"| SENTRY["Sentry errors only, if NEXT_PUBLIC_SENTRY_DSN set; beforeSend drops request, user, breadcrumbs, extra, non-platform contexts and strips query strings"]
 ```
 
 Sources: `app/page.tsx`, `app/services/page.tsx`, `app/services/[slug]/page.tsx`, `app/robots.ts`, `app/sitemap.ts`, `lib/site-config.ts`, `lib/site.ts`, `lib/pseo.ts`, `lib/readiness.ts`, `components/pseo-page.tsx`, `components/site-links.tsx`, `next.config.ts`, `instrumentation-client.ts`, `lib/sentry.ts`, `.github/workflows/ci.yml`, `README.md`, `PRODUCT.md`
@@ -38,7 +38,7 @@ Sources: `app/page.tsx`, `app/services/page.tsx`, `app/services/[slug]/page.tsx`
 - sitemap ในโหมด index มี `/`, `/services/`, `/services/property-data-operations-strategy/`
 - social card คือ `public/og.png` (วาดโดย `scripts/og.mjs` แล้ว commit ไว้)
 - CI รัน lint + typecheck + Vitest (coverage gate 68%) + `npm run check` แล้วเช็คว่า `out/robots.txt` เป็น `Disallow: /` แล้วรัน security scan ที่ใช้ร่วมกัน (`.github/workflows/ci.yml`)
-- Sentry เปิดเฉพาะฝั่ง browser เมื่อมี DSN (`instrumentation-client.ts`, `lib/sentry.ts`) ไม่มี DSN คือปิด
+- Sentry เปิดเฉพาะฝั่ง browser เมื่อมี DSN (`instrumentation-client.ts`, `lib/sentry.ts`) ไม่มี DSN คือปิด; `beforeSend` ลบ request/user/breadcrumbs/extra และ context ที่ไม่ใช่ข้อมูลแพลตฟอร์ม กับตัด query/hash ออกจากข้อความ ไม่ได้ลบข้อมูลอื่นทั้งหมด (stack trace และชื่อ error ยังส่ง)
 - การ deploy: `PRODUCT.md` (2026-10-23) บอกว่า project `solo-agency-real-estate` ไม่มี Git link และ deploy ด้วย Vercel CLI; ในโค้ดไม่มี deploy step จึงยืนยันสถานะวันนี้ไม่ได้ [ต้องยืนยัน]
 
 ## To-Be (จาก PRODUCT.md และ docs/UPGRADE-PLAN.md)
@@ -47,8 +47,8 @@ Sources: `app/page.tsx`, `app/services/page.tsx`, `app/services/[slug]/page.tsx`
 flowchart TD
   OWNER["owner"] --> GITLINK["Vercel Git link to repo (owner action D9)"]
   GITLINK --> PUSH["push to main"]
-  PUSH --> CI["CI: web + security"]
-  CI -->|green| DEPLOY["Vercel deploys main"]
+  PUSH --> DEPLOY["Vercel deploys main (Git integration, not gated by CI)"]
+  PUSH --> CI["CI: web + security (separate check)"]
   OWNER --> URL["approve public URL"]
   URL --> ENV["set NEXT_PUBLIC_SITE_URL + NEXT_PUBLIC_SITE_INDEXABLE=true on Vercel"]
   ENV --> BUILD["static export out/"]
